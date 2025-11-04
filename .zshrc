@@ -1,13 +1,18 @@
+# ~/.zshrc — МОДУЛЬНЫЙ
 
-# Загружает все модули в папке config
+# Путь к конфигам
+ZSH_CONFIG="$HOME/.zsh/config"
 
-if [[ -d "$HOME/.zsh/config" ]]; then
-  for file in "$HOME/.zsh/config"/*.zsh; do
-    [[ -r "file" ]] && source "file"
+# Загружаем ВСЕ .zsh файлы по алфавиту
+if [[ -d "$ZSH_CONFIG" ]]; then
+  for file in "$ZSH_CONFIG"/*.zsh; do
+    [[ -f "$file" ]] && source "$file"
   done
-  unset file
 fi
 
+# Локальные настройки (не коммитить)
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
-# Optional for local configuration files with abbriviature .local
-[[ -f "HOME/.zshrc.local" ]] && source "HOME/.zshrc.local"
+# Отладка
+echo "Загружено модулей: $(find "$ZSH_CONFIG" -name '*.zsh' | wc -l | xargs)"
+echo "✅ Загружено: $(ls ~/.zsh/config/*.zsh | wc -l) модулей"
